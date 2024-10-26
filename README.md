@@ -18,9 +18,7 @@ Using this automated workflow provides several benefits:
 2. **Error Prevention**: Prevents accidental overwriting of existing tags.
 3. **Efficiency**: Saves time by automating the tag creation and push process.
 4. **Traceability**: Creates annotated tags with descriptions, improving version tracking.
-5. **Accessibility**: Allows team members to create tags without direct repository access.
-6. **Integration**: Fits seamlessly into your CI/CD pipeline.
-7. **Auditability**: All tag creations are logged in GitHub Actions, providing a clear audit trail.
+5. **Auditability**: All tag creations are logged in GitHub Actions, providing a clear audit trail.
 
 ## Usage
 
