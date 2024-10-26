@@ -1,0 +1,46 @@
+name: Create Billing Server Tag
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: "Tag name (format: billing-server-img/vX.Y.Z)"
+        required: true
+      tag_description:
+        description: "Tag description"
+        required: true
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  create_and_push_billing_server_tag:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate tag name
+        run: |
+          if [[ ! ${{ github.event.inputs.tag_name }} =~ ^billing-server-img/v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Invalid tag name. It should be in the format billing-server-img/vX.Y.Z"
+            exit 1
+          fi
+
+      - name: Check if tag already exists
+        run: |
+          if git rev-parse ${{ github.event.inputs.tag_name }} >/dev/null 2>&1; then
+            echo "Tag ${{ github.event.inputs.tag_name }} already exists"
+            exit 1
+          fi
+
+      - name: Create and push tag
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git tag -a ${{ github.event.inputs.tag_name }} -m "${{ github.event.inputs.tag_description }}"
+          git push origin ${{ github.event.inputs.tag_name }}
